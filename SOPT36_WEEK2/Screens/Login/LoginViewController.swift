@@ -18,14 +18,15 @@ final class LoginViewController: UIViewController {
         let tf = UITextField()
         tf.backgroundColor = .gray4
         tf.textColor = .dsWhite
-        tf.attributedPlaceholder = NSAttributedString(
-            string: "아이디",
-            attributes: [.foregroundColor: UIColor.gray2]
-        )
+        tf.font = .pretendardSemiBold(ofSize: 15)
+        tf.placeholder = "아이디"
+        tf.setPlaceholderColor(.gray2)
+        tf.setLeftPadding(12)
         tf.layer.cornerRadius = 3
         tf.borderStyle = .none
         tf.font = .pretendardSemiBold(ofSize: 15)
         tf.setLeftPadding(12)
+        tf.clearButtonMode = .whileEditing
         return tf
     }()
 
@@ -33,15 +34,16 @@ final class LoginViewController: UIViewController {
         let tf = UITextField()
         tf.backgroundColor = .gray4
         tf.textColor = .dsWhite
-        tf.attributedPlaceholder = NSAttributedString(
-            string: "비밀번호",
-            attributes: [.foregroundColor: UIColor.gray2]
-        )
+        tf.font = .pretendardSemiBold(ofSize: 15)
+        tf.placeholder = "비밀번호"
+        tf.setPlaceholderColor(.gray2)
+        tf.setLeftPadding(12)
         tf.isSecureTextEntry = true
         tf.layer.cornerRadius = 3
         tf.borderStyle = .none
         tf.font = .pretendardMedium(ofSize: 15)
         tf.setLeftPadding(12)
+        tf.clearButtonMode = .whileEditing
         return tf
     }()
 
@@ -88,7 +90,7 @@ final class LoginViewController: UIViewController {
     private let dividerLabel: UILabel = {
         let label = UILabel()
         label.text = "|"
-        label.textColor = .dsWhite
+        label.textColor = .gray4
         return label
     }()
 
@@ -119,12 +121,15 @@ final class LoginViewController: UIViewController {
         view.backgroundColor = .dsBlack
         setupUI()
         setupActions()
+        emailTextField.enableFocusBorderChange()
+        passwordTextField.enableFocusBorderChange()
+        addPasswordToggleButton()
     }
 
     // MARK: - Setup UI
 
     private func setupUI() {
-        [
+        view.addSubviews(
             titleLabel,
             emailTextField,
             passwordTextField,
@@ -134,7 +139,7 @@ final class LoginViewController: UIViewController {
             dividerLabel,
             notMemberLabel,
             signupButton
-        ].forEach { view.addSubview($0) }
+        )
 
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
@@ -194,6 +199,39 @@ final class LoginViewController: UIViewController {
         passwordTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
     }
+    
+    private func addPasswordToggleButton() {
+        let clearButton = UIButton(type: .custom)
+        clearButton.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        clearButton.tintColor = .gray3
+        clearButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        clearButton.addTarget(self, action: #selector(clearPassword), for: .touchUpInside)
+
+        let eyeButton = UIButton(type: .custom)
+        eyeButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
+        eyeButton.tintColor = .gray3
+        eyeButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        eyeButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
+
+        let stackView = UIStackView(arrangedSubviews: [clearButton, eyeButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 6
+        stackView.alignment = .center
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 24))
+        container.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
+            stackView.topAnchor.constraint(equalTo: container.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+
+        passwordTextField.rightView = container
+        passwordTextField.rightViewMode = .whileEditing
+    }
 
     // MARK: - Actions
 
@@ -204,9 +242,26 @@ final class LoginViewController: UIViewController {
 
         loginButton.isEnabled = isActive
         loginButton.backgroundColor = isActive ? .dsRed : .gray4
+        loginButton.setTitleColor(isActive ? .white : .gray2, for: .normal)
         loginButton.layer.borderWidth = isActive ? 0 : 1
     }
+    
+    @objc private func clearPassword() {
+        passwordTextField.text = ""
+        textFieldChanged()
+    }
 
+    @objc private func togglePasswordVisibility() {
+        passwordTextField.isSecureTextEntry.toggle()
+
+        if let container = passwordTextField.rightView as? UIView,
+           let stack = container.subviews.first as? UIStackView,
+           let eyeButton = stack.arrangedSubviews.last as? UIButton {
+            let iconName = passwordTextField.isSecureTextEntry ? "eye.fill" : "eye.slash.fill"
+            eyeButton.setImage(UIImage(systemName: iconName), for: .normal)
+        }
+    }
+    
     @objc private func loginTapped() {
         guard let email = emailTextField.text else { return }
         print("로그인 시도! 이메일: \(email)")
