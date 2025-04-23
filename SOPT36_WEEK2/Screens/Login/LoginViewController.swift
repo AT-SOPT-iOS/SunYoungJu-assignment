@@ -263,7 +263,11 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func loginTapped() {
-        guard let email = emailTextField.text else { return }
+        guard let email = emailTextField.text, !email.isEmpty else { return }
         print("로그인 시도! 이메일: \(email)")
+
+        let welcomeViewController = WelcomeViewController()
+        welcomeViewController.id = email
+        navigationController?.pushViewController(welcomeViewController, animated: true)
     }
 }
