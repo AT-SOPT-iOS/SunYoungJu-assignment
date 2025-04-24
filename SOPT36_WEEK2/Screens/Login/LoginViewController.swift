@@ -117,6 +117,14 @@ final class LoginViewController: UIViewController, NicknameDelegate {
         btn.setAttributedTitle(attributedTitle, for: .normal)
         return btn
     }()
+    
+    private lazy var signupStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [notMemberLabel, signupButton])
+        stack.axis = .horizontal
+        stack.spacing = 22
+        stack.alignment = .center
+        return stack
+    }()
 
     // MARK: - Lifecycle
 
@@ -142,8 +150,7 @@ final class LoginViewController: UIViewController, NicknameDelegate {
             findIDButton,
             findPWButton,
             dividerLabel,
-            notMemberLabel,
-            signupButton
+            signupStackView
         )
 
         titleLabel.snp.makeConstraints {
@@ -184,15 +191,10 @@ final class LoginViewController: UIViewController, NicknameDelegate {
             $0.centerY.equalTo(dividerLabel)
             $0.leading.equalTo(dividerLabel.snp.trailing).offset(36)
         }
-
-        notMemberLabel.snp.makeConstraints {
+    
+        signupStackView.snp.makeConstraints {
             $0.top.equalTo(dividerLabel.snp.bottom).offset(32)
-            $0.leading.equalTo(emailTextField)
-        }
-
-        signupButton.snp.makeConstraints {
-            $0.centerY.equalTo(notMemberLabel)
-            $0.trailing.equalTo(emailTextField)
+            $0.centerX.equalToSuperview()
         }
         
     }
