@@ -1,5 +1,5 @@
 //
-//   NicknameBottomSheetViewController.swift
+//  NicknameBottomSheetViewController.swift
 //  SOPT36_WEEK2
 //
 //  Created by 선영주 on 4/24/25.
@@ -8,7 +8,13 @@
 import UIKit
 import SnapKit
 
+protocol NicknameDelegate: AnyObject {
+    func didEnterNickname(_ nickname: String)
+}
+
 final class NicknameBottomSheetViewController: UIViewController {
+    
+    weak var delegate: NicknameDelegate?
     
     // MARK: - UI Components
     
@@ -29,7 +35,7 @@ final class NicknameBottomSheetViewController: UIViewController {
         tf.setLeftPadding(12)
         return tf
     }()
-
+    
     private let saveButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("저장하기", for: .normal)
@@ -55,7 +61,7 @@ final class NicknameBottomSheetViewController: UIViewController {
         view.backgroundColor = .white
         if let sheet = sheetPresentationController {
             sheet.detents = [.medium()]
-            sheet.prefersGrabberVisible = true
+            sheet.prefersGrabberVisible = false
             sheet.preferredCornerRadius = 20
             sheet.largestUndimmedDetentIdentifier = nil
             sheet.prefersGrabberVisible = true
@@ -93,7 +99,10 @@ final class NicknameBottomSheetViewController: UIViewController {
     
     @objc private func saveNickname() {
         let nickname = nicknameTextField.text ?? ""
-        print("입력된 닉네임: \(nickname)")
+        
+        guard nickname.isValidNickname else { return }
+        
+        delegate?.didEnterNickname(nickname)
         dismiss(animated: true)
     }
 }
