@@ -1,7 +1,11 @@
 import UIKit
 import SnapKit
 
-final class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController, NicknameDelegate {
+    
+    // MARK: - Properties
+
+    private var nickname: String?
 
     // MARK: - UI Components
 
@@ -124,6 +128,7 @@ final class LoginViewController: UIViewController {
         emailTextField.enableFocusBorderChange()
         passwordTextField.enableFocusBorderChange()
         addPasswordToggleButton()
+        addEmailClearButton()
     }
 
     // MARK: - Setup UI
@@ -198,19 +203,43 @@ final class LoginViewController: UIViewController {
         emailTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        signupButton.addTarget(self, action: #selector(signupTapped), for:
+            .touchUpInside)
+    }
+    
+    private func addEmailClearButton() {
+        let clearButton = UIButton(type: .custom)
+        clearButton.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        clearButton.tintColor = .gray3
+        clearButton.addTarget(self, action: #selector(clearEmail), for: .touchUpInside)
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 24))
+        container.addSubview(clearButton)
+
+        clearButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(10)
+            $0.size.equalTo(20)
+        }
+        
+        container.snp.makeConstraints {
+                $0.width.equalTo(40)
+                $0.height.equalTo(24)
+        }
+
+        emailTextField.rightView = container
+        emailTextField.rightViewMode = .whileEditing
     }
     
     private func addPasswordToggleButton() {
         let clearButton = UIButton(type: .custom)
         clearButton.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         clearButton.tintColor = .gray3
-        clearButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         clearButton.addTarget(self, action: #selector(clearPassword), for: .touchUpInside)
 
         let eyeButton = UIButton(type: .custom)
         eyeButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
         eyeButton.tintColor = .gray3
-        eyeButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         eyeButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
 
         let stackView = UIStackView(arrangedSubviews: [clearButton, eyeButton])
@@ -218,22 +247,29 @@ final class LoginViewController: UIViewController {
         stackView.spacing = 6
         stackView.alignment = .center
 
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 24))
+        let container = UIView()
         container.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
-            stackView.topAnchor.constraint(equalTo: container.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: container.bottomAnchor)
-        ])
+        stackView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(6)
+        }
+
+        container.snp.makeConstraints {
+            $0.width.equalTo(40)
+            $0.height.equalTo(24)
+        }
 
         passwordTextField.rightView = container
         passwordTextField.rightViewMode = .whileEditing
     }
 
     // MARK: - Actions
+    
+    @objc private func clearEmail() {
+        emailTextField.text = ""
+        textFieldChanged()
+    }
 
     @objc private func textFieldChanged() {
         let isEmailNotEmpty = !(emailTextField.text ?? "").isEmpty
@@ -263,11 +299,29 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func loginTapped() {
-        guard let email = emailTextField.text, !email.isEmpty else { return }
-        print("로그인 시도! 이메일: \(email)")
+        guard let email = emailTextField.text, email.isValidEmail else {
+               return
+           }
+
+           guard let password = passwordTextField.text, password.isValidPassword else {
+               return
+           }
 
         let welcomeViewController = WelcomeViewController()
-        welcomeViewController.id = email
+        welcomeViewController.id = nickname ?? email
         navigationController?.pushViewController(welcomeViewController, animated: true)
+    }
+    
+    @objc private func signupTapped() {
+            let nicknameVC = NicknameBottomSheetViewController()
+            nicknameVC.modalPresentationStyle = .pageSheet
+            nicknameVC.delegate = self
+            present(nicknameVC, animated: true)
+        }
+
+    // MARK: - Delegate
+
+    func didEnterNickname(_ nickname: String) {
+        self.nickname = nickname
     }
 }
