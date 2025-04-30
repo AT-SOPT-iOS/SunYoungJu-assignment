@@ -292,7 +292,7 @@ final class LoginViewController: UIViewController, NicknameDelegate {
     @objc private func togglePasswordVisibility() {
         passwordTextField.isSecureTextEntry.toggle()
 
-        if let container = passwordTextField.rightView as? UIView,
+        if let container = passwordTextField.rightView,
            let stack = container.subviews.first as? UIStackView,
            let eyeButton = stack.arrangedSubviews.last as? UIButton {
             let iconName = passwordTextField.isSecureTextEntry ? "eye.fill" : "eye.slash.fill"

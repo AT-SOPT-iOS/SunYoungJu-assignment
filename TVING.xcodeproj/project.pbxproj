@@ -15,26 +15,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		980AA2DC2DB4D6950065D9D3 /* SOPT36_WEEK2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SOPT36_WEEK2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		980AA2DC2DB4D6950065D9D3 /* TVING.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVING.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		980AA2EE2DB4D6970065D9D3 /* Exceptions for "SOPT36_WEEK2" folder in "SOPT36_WEEK2" target */ = {
+		98314CB82DC29557007A2D4B /* Exceptions for "TVING" folder in "TVING" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 980AA2DB2DB4D6950065D9D3 /* SOPT36_WEEK2 */;
+			target = 980AA2DB2DB4D6950065D9D3 /* TVING */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		980AA2DE2DB4D6950065D9D3 /* SOPT36_WEEK2 */ = {
+		980AA2DE2DB4D6950065D9D3 /* TVING */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				980AA2EE2DB4D6970065D9D3 /* Exceptions for "SOPT36_WEEK2" folder in "SOPT36_WEEK2" target */,
+				98314CB82DC29557007A2D4B /* Exceptions for "TVING" folder in "TVING" target */,
 			);
-			path = SOPT36_WEEK2;
+			path = TVING;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -58,7 +58,7 @@
 		980AA2D32DB4D6950065D9D3 = {
 			isa = PBXGroup;
 			children = (
-				980AA2DE2DB4D6950065D9D3 /* SOPT36_WEEK2 */,
+				980AA2DE2DB4D6950065D9D3 /* TVING */,
 				980AA2DD2DB4D6950065D9D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,7 +66,7 @@
 		980AA2DD2DB4D6950065D9D3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				980AA2DC2DB4D6950065D9D3 /* SOPT36_WEEK2.app */,
+				980AA2DC2DB4D6950065D9D3 /* TVING.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -74,9 +74,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		980AA2DB2DB4D6950065D9D3 /* SOPT36_WEEK2 */ = {
+		980AA2DB2DB4D6950065D9D3 /* TVING */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 980AA2EF2DB4D6970065D9D3 /* Build configuration list for PBXNativeTarget "SOPT36_WEEK2" */;
+			buildConfigurationList = 980AA2EF2DB4D6970065D9D3 /* Build configuration list for PBXNativeTarget "TVING" */;
 			buildPhases = (
 				980AA2D82DB4D6950065D9D3 /* Sources */,
 				980AA2D92DB4D6950065D9D3 /* Frameworks */,
@@ -87,11 +87,11 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				980AA2DE2DB4D6950065D9D3 /* SOPT36_WEEK2 */,
+				980AA2DE2DB4D6950065D9D3 /* TVING */,
 			);
-			name = SOPT36_WEEK2;
+			name = TVING;
 			productName = SOPT36_WEEK2;
-			productReference = 980AA2DC2DB4D6950065D9D3 /* SOPT36_WEEK2.app */;
+			productReference = 980AA2DC2DB4D6950065D9D3 /* TVING.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -109,7 +109,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 980AA2D72DB4D6950065D9D3 /* Build configuration list for PBXProject "SOPT36_WEEK2" */;
+			buildConfigurationList = 980AA2D72DB4D6950065D9D3 /* Build configuration list for PBXProject "TVING" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -126,7 +126,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				980AA2DB2DB4D6950065D9D3 /* SOPT36_WEEK2 */,
+				980AA2DB2DB4D6950065D9D3 /* TVING */,
 			);
 		};
 /* End PBXProject section */
@@ -161,7 +161,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6B47X24XTW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SOPT36_WEEK2/Info.plist;
+				INFOPLIST_FILE = TVING/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -172,7 +172,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.dudwntjs.SOPT36-WEEK2";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dudwntjs.TVING;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -193,7 +193,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6B47X24XTW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SOPT36_WEEK2/Info.plist;
+				INFOPLIST_FILE = TVING/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -204,7 +204,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.dudwntjs.SOPT36-WEEK2";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dudwntjs.TVING;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -269,7 +269,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -327,7 +327,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -340,7 +340,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		980AA2D72DB4D6950065D9D3 /* Build configuration list for PBXProject "SOPT36_WEEK2" */ = {
+		980AA2D72DB4D6950065D9D3 /* Build configuration list for PBXProject "TVING" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				980AA2F22DB4D6970065D9D3 /* Debug */,
@@ -349,7 +349,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		980AA2EF2DB4D6970065D9D3 /* Build configuration list for PBXNativeTarget "SOPT36_WEEK2" */ = {
+		980AA2EF2DB4D6970065D9D3 /* Build configuration list for PBXNativeTarget "TVING" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				980AA2F02DB4D6970065D9D3 /* Debug */,
