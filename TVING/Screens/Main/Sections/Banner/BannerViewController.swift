@@ -1,5 +1,5 @@
 //
-//  BannerView.swift
+//  BannerViewController.swift
 //  TVING
 //
 //  Created by 선영주 on 5/1/25.
@@ -21,7 +21,7 @@ class BannerViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(BannerCell.self, forCellWithReuseIdentifier: "BannerCell")
+        collectionView.register(BannerViewCell.self, forCellWithReuseIdentifier: "BannerViewCell")
         return collectionView
     }()
 
@@ -45,7 +45,7 @@ extension BannerViewController: UICollectionViewDataSource, UICollectionViewDele
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BannerCell", for: indexPath) as! BannerCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BannerViewCell", for: indexPath) as! BannerViewCell
         let model = bannerItems[indexPath.item]
         cell.configure(with: model)
         return cell

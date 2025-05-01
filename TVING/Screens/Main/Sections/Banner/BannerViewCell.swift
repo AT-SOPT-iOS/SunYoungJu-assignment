@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class BannerCell: UICollectionViewCell {
+class BannerViewCell: UICollectionViewCell {
 
     let imageView: UIImageView = {
         let iv = UIImageView()
