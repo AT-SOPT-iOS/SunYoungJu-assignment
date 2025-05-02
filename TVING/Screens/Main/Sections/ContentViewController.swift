@@ -81,7 +81,6 @@ class ContentViewController: UIViewController {
             make.height.equalTo(250)
         }
 
-        // ⭐ 인기 영화
         let movieVC = MovieViewController()
         addChild(movieVC)
         contentView.addSubview(movieVC.view)
@@ -93,7 +92,6 @@ class ContentViewController: UIViewController {
             make.height.equalTo(250)
         }
 
-        // ⭐ 야구
         let baseballVC = BaseballViewController()
         addChild(baseballVC)
         contentView.addSubview(baseballVC.view)

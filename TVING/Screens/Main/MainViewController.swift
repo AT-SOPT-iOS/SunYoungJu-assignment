@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftUI
 import SnapKit
 import Then
 
@@ -139,7 +138,6 @@ class MainViewController: UIViewController {
             previousButton = button
         }
 
-        // activeBar 위치
         tabBarView.addSubview(activeBar)
         guard let firstButton = tabButtons.first else { return }
 
@@ -164,7 +162,6 @@ class MainViewController: UIViewController {
 
         var previousPage: UIView? = nil
 
-        // ⭐ 홈(콘텐츠) 뷰 추가
         let homeVC = ContentViewController()
         addChild(homeVC)
         pagingScrollView.addSubview(homeVC.view)
@@ -180,7 +177,7 @@ class MainViewController: UIViewController {
         previousPage = homeVC.view
         pageViews.append(homeVC.view)
 
-        // ⭐ 나머지 빈 페이지들 추가
+        //심화 과제를 위해서 만들었더여
         for _ in 1..<buttonTitles.count {
             let page = UIView().then {
                 $0.backgroundColor = .black
@@ -227,27 +224,3 @@ extension MainViewController: UIScrollViewDelegate {
         moveActiveBar(to: pageIndex)
     }
 }
-
-struct PreviewProvider_MainViewController: PreviewProvider {
-    static var previews: some View {
-        MainViewController().toPreview()
-    }
-}
-
-#if DEBUG
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        let viewController: UIViewController
-
-        func makeUIViewController(context: Context) -> UIViewController {
-            return viewController
-        }
-
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-    }
-
-    func toPreview() -> some View {
-        Preview(viewController: self)
-    }
-}
-#endif
