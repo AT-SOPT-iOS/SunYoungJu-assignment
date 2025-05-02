@@ -4,67 +4,53 @@
 //
 //  Created by 선영주 on 5/1/25.
 //
+
 import UIKit
 import SwiftUI
+import SnapKit
+import Then
 
 class MainViewController: UIViewController {
 
-    private let headerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        return view
-    }()
+    // MARK: - UI 컴포넌트
 
-    private let logoImageView: UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "TVING_Main"))
-        iv.contentMode = .scaleAspectFill
-        return iv
-    }()
+    private let headerView = UIView().then {
+        $0.backgroundColor = .black
+    }
 
-    private let searchButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "Search"), for: .normal)
-        button.tintColor = .white
-        return button
-    }()
+    private let tabBarView = UIView().then {
+        $0.backgroundColor = .black
+    }
 
-    private let tvingImageView: UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "TVING_Logo"))
-        iv.contentMode = .scaleAspectFit
-        return iv
-    }()
-    
-    private let tabBarView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
+    private let logoImageView = UIImageView(image: UIImage(named: "TVING_Main")).then {
+        $0.contentMode = .scaleAspectFill
+    }
 
-        let buttonTitles = ["홈", "드라마", "예능", "영화", "스포츠", "뉴스"]
-        var previousButton: UIButton? = nil
+    private let searchButton = UIButton(type: .system).then {
+        $0.setImage(UIImage(named: "Search"), for: .normal)
+        $0.tintColor = .white
+    }
 
-        for title in buttonTitles {
-            let button = UIButton(type: .system)
-            button.setTitle(title, for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.titleLabel?.font = UIFont.pretendardRegular(ofSize: 17)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(button)
+    private let tvingImageView = UIImageView(image: UIImage(named: "TVING_Logo")).then {
+        $0.contentMode = .scaleAspectFit
+    }
 
-            if previousButton == nil {
-                button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-            } else {
-                button.leadingAnchor.constraint(equalTo: previousButton!.trailingAnchor, constant: 20).isActive = true
-            }
-            button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    private let activeBar = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 1
+    }
 
-            previousButton = button
-        }
+    private var tabButtons: [UIButton] = []
+    private let buttonTitles = ["홈", "드라마", "예능", "영화", "스포츠", "뉴스"]
 
-        return view
-    }()
-    
+    private let pagingScrollView = UIScrollView().then {
+        $0.isPagingEnabled = true
+        $0.showsHorizontalScrollIndicator = false
+    }
 
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
+    private var pageViews: [UIView] = []
+
+    // MARK: - 생명주기
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,188 +58,173 @@ class MainViewController: UIViewController {
 
         setupHeaderView()
         setupTabBarView()
-        setupScrollView()
-        setupSections()
+        setupPagingScrollView()
     }
 
-    // MARK: - HeaderView 설정
+    // MARK: - 헤더 설정
+
     private func setupHeaderView() {
         view.addSubview(headerView)
-        headerView.addSubview(logoImageView)
-        headerView.addSubview(searchButton)
-        headerView.addSubview(tvingImageView)
+        [logoImageView, searchButton, tvingImageView].forEach { headerView.addSubview($0) }
 
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        searchButton.translatesAutoresizingMaskIntoConstraints = false
-        tvingImageView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(60)
+        }
 
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 60),
+        logoImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(0)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(30)
+        }
 
-            logoImageView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 0),
-            logoImageView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            logoImageView.heightAnchor.constraint(equalToConstant: 30),
+        tvingImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(20)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(30)
+        }
 
-            tvingImageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
-            tvingImageView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            tvingImageView.widthAnchor.constraint(equalToConstant: 30),
-            tvingImageView.heightAnchor.constraint(equalToConstant: 30),
-
-            searchButton.trailingAnchor.constraint(equalTo: tvingImageView.leadingAnchor, constant: -20),
-            searchButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            searchButton.widthAnchor.constraint(equalToConstant: 30),
-            searchButton.heightAnchor.constraint(equalToConstant: 30)
-        ])
+        searchButton.snp.makeConstraints { make in
+            make.trailing.equalTo(tvingImageView.snp.leading).offset(-20)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(30)
+        }
     }
-    
-    // MARK: - TabView 설정
+
+    // MARK: - 탭바 설정
+
     private func setupTabBarView() {
         view.addSubview(tabBarView)
-        tabBarView.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            tabBarView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            tabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tabBarView.heightAnchor.constraint(equalToConstant: 23)
-        ])
+        tabBarView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
+        }
+
+        let bottomLine = UIView().then {
+            $0.backgroundColor = UIColor(red: 44/255, green: 44/255, blue: 44/255, alpha: 1) // #2C2C2C
+        }
+
+        tabBarView.addSubview(bottomLine)
+        bottomLine.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+        }
+
+        var previousButton: UIButton? = nil
+
+        for (index, title) in buttonTitles.enumerated() {
+            let button = UIButton(type: .system).then {
+                $0.setTitle(title, for: .normal)
+                $0.setTitleColor(.white, for: .normal)
+                $0.titleLabel?.font = UIFont.pretendardRegular(ofSize: 17)
+                $0.tag = index
+                $0.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
+            }
+
+            tabBarView.addSubview(button)
+            tabButtons.append(button)
+
+            button.snp.makeConstraints { make in
+                if let previous = previousButton {
+                    make.leading.equalTo(previous.snp.trailing).offset(30)
+                } else {
+                    make.leading.equalToSuperview().offset(10)
+                }
+                make.centerY.equalToSuperview()
+            }
+
+            previousButton = button
+        }
+
+        // activeBar 위치
+        tabBarView.addSubview(activeBar)
+        guard let firstButton = tabButtons.first else { return }
+
+        activeBar.snp.makeConstraints { make in
+            make.top.equalTo(firstButton.snp.bottom).offset(2)
+            make.height.equalTo(2)
+            make.width.equalTo(firstButton.snp.width).multipliedBy(0.8)
+            make.centerX.equalTo(firstButton.snp.centerX)
+        }
     }
 
-    // MARK: - ScrollView 설정
-    private func setupScrollView() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+    // MARK: - 페이지 스크롤뷰 설정
 
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupPagingScrollView() {
+        pagingScrollView.delegate = self
+        view.addSubview(pagingScrollView)
 
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        pagingScrollView.snp.makeConstraints { make in
+            make.top.equalTo(tabBarView.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+        var previousPage: UIView? = nil
 
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
+        // ⭐ 홈(콘텐츠) 뷰 추가
+        let homeVC = ContentViewController()
+        addChild(homeVC)
+        pagingScrollView.addSubview(homeVC.view)
+        homeVC.didMove(toParent: self)
+
+        homeVC.view.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(view.snp.width)
+            make.leading.equalToSuperview()
+            make.height.equalTo(pagingScrollView.snp.height)
+        }
+
+        previousPage = homeVC.view
+        pageViews.append(homeVC.view)
+
+        // ⭐ 나머지 빈 페이지들 추가
+        for _ in 1..<buttonTitles.count {
+            let page = UIView().then {
+                $0.backgroundColor = .black
+            }
+            pagingScrollView.addSubview(page)
+            page.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.width.equalTo(view.snp.width)
+                make.height.equalTo(pagingScrollView.snp.height)
+                make.leading.equalTo(previousPage!.snp.trailing)
+            }
+
+            previousPage = page
+            pageViews.append(page)
+        }
+
+        previousPage?.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+        }
     }
 
-    // MARK: - 섹션 뷰컨트롤러 추가
-    private func setupSections() {
+    // MARK: - 탭 버튼 액션
 
-        let bannerVC = BannerViewController()
-        addChild(bannerVC)
-        contentView.addSubview(bannerVC.view)
-        bannerVC.didMove(toParent: self)
+    @objc private func tabButtonTapped(_ sender: UIButton) {
+        let page = sender.tag
+        let offset = CGFloat(page) * pagingScrollView.frame.width
+        pagingScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+        moveActiveBar(to: page)
+    }
 
-        bannerVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            bannerVC.view.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
-            bannerVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            bannerVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            bannerVC.view.heightAnchor.constraint(equalToConstant: 400)
-        ])
+    private func moveActiveBar(to index: Int) {
+        guard index < tabButtons.count else { return }
+        UIView.animate(withDuration: 0.3) {
+            self.activeBar.center.x = self.tabButtons[index].center.x
+        }
+    }
+}
 
-        let topVC = TopViewController()
-        addChild(topVC)
-        contentView.addSubview(topVC.view)
-        topVC.didMove(toParent: self)
+// MARK: - ScrollView Delegate
 
-        topVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            topVC.view.topAnchor.constraint(equalTo: bannerVC.view.bottomAnchor, constant: 20),
-            topVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            topVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            topVC.view.heightAnchor.constraint(equalToConstant: 230)
-        ])
-
-        let liveVC = LiveViewController()
-        addChild(liveVC)
-        contentView.addSubview(liveVC.view)
-        liveVC.didMove(toParent: self)
-
-        liveVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            liveVC.view.topAnchor.constraint(equalTo: topVC.view.bottomAnchor, constant: 20),
-            liveVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            liveVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            liveVC.view.heightAnchor.constraint(equalToConstant: 230)
-        ])
-
-        let movieVC = MovieViewController()
-        addChild(movieVC)
-        contentView.addSubview(movieVC.view)
-        movieVC.didMove(toParent: self)
-
-        movieVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            movieVC.view.topAnchor.constraint(equalTo: liveVC.view.bottomAnchor, constant: 20),
-            movieVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            movieVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            movieVC.view.heightAnchor.constraint(equalToConstant: 230)
-        ])
-
-        let baseballVC = BaseballViewController()
-        addChild(baseballVC)
-        contentView.addSubview(baseballVC.view)
-        baseballVC.didMove(toParent: self)
-
-        baseballVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            baseballVC.view.topAnchor.constraint(equalTo: movieVC.view.bottomAnchor, constant: 20),
-            baseballVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            baseballVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            baseballVC.view.heightAnchor.constraint(equalToConstant: 90)
-        ])
-
-        let brandVC = BrandViewController()
-        addChild(brandVC)
-        contentView.addSubview(brandVC.view)
-        brandVC.didMove(toParent: self)
-
-        brandVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            brandVC.view.topAnchor.constraint(equalTo: baseballVC.view.bottomAnchor, constant: 20),
-            brandVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            brandVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            brandVC.view.heightAnchor.constraint(equalToConstant: 60)
-        ])
-
-        let masterpieceVC = MasterpieceViewController()
-        addChild(masterpieceVC)
-        contentView.addSubview(masterpieceVC.view)
-        masterpieceVC.didMove(toParent: self)
-
-        masterpieceVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            masterpieceVC.view.topAnchor.constraint(equalTo: brandVC.view.bottomAnchor, constant: 20),
-            masterpieceVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            masterpieceVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            masterpieceVC.view.heightAnchor.constraint(equalToConstant: 210),
-            masterpieceVC.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
-        ])
-        
-        let footerVC = FooterViewController()
-        addChild(footerVC)
-        contentView.addSubview(footerVC.view)
-        footerVC.didMove(toParent: self)
-
-        footerVC.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            footerVC.view.topAnchor.constraint(equalTo: masterpieceVC.view.bottomAnchor, constant: 70),
-            footerVC.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            footerVC.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            footerVC.view.heightAnchor.constraint(equalToConstant: 200),
-            footerVC.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
-        ])
+extension MainViewController: UIScrollViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageIndex = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
+        moveActiveBar(to: pageIndex)
     }
 }
 
