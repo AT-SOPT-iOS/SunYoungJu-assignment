@@ -4,77 +4,82 @@
 //
 //  Created by 선영주 on 5/1/25.
 //
-import UIKit
 
-class LiveViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-    
+import UIKit
+import SnapKit
+import Then
+
+class LiveViewController: UIViewController {
+
+    // MARK: - 데이터
 
     private let liveItems: [LiveModel] = LiveModel.dummy()
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "실시간 인기 LIVE"
-        label.font = UIFont.pretendardBold(ofSize: 15)
-        label.textColor = .white
-        return label
-    }()
+    // MARK: - UI 컴포넌트
 
-    private let moreButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("더보기", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.pretendardRegular(ofSize: 15)
-        return button
-    }()
+    private let titleLabel = UILabel().then {
+        $0.text = "실시간 인기 LIVE"
+        $0.font = UIFont.pretendardBold(ofSize: 15)
+        $0.textColor = .white
+    }
 
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 160, height: 170)
-        layout.minimumLineSpacing = 20
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+    private let moreButton = UIButton(type: .system).then {
+        $0.setTitle("더보기", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = UIFont.pretendardRegular(ofSize: 15)
+    }
 
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .black
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(LiveViewCell.self, forCellWithReuseIdentifier: "LiveViewCell")
-        return collectionView
-    }()
+    private lazy var collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout().then {
+            $0.scrollDirection = .horizontal
+            $0.itemSize = CGSize(width: 160, height: 170)
+            $0.minimumLineSpacing = 12
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        }
+    ).then {
+        $0.backgroundColor = .black
+        $0.dataSource = self
+        $0.delegate = self
+        $0.register(LiveViewCell.self, forCellWithReuseIdentifier: "LiveViewCell")
+    }
+
+    // MARK: - 생명주기
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        view.addSubview(titleLabel)
-        view.addSubview(moreButton)
-        view.addSubview(collectionView)
-
         setupLayout()
     }
 
+    // MARK: - 레이아웃
+
     private func setupLayout() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        moreButton.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        [titleLabel, moreButton, collectionView].forEach { view.addSubview($0) }
 
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview().offset(20)
+        }
 
-            moreButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            moreButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        moreButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel.snp.centerY)
+            make.trailing.equalToSuperview().offset(-20)
+        }
 
-            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 180),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor) // 마지막 하단 anchor
-        ])
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(180)
+            make.bottom.equalToSuperview()
+        }
     }
 }
 
-extension LiveViewController {
-    
+// MARK: - 컬렉션뷰 데이터소스
+
+extension LiveViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return liveItems.count
     }
