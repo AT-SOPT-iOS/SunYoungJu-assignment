@@ -4,75 +4,81 @@
 //
 //  Created by 선영주 on 5/1/25.
 //
+
 import UIKit
+import SnapKit
+import Then
 
 class MovieViewController: UIViewController {
 
+    // MARK: - 데이터
+
     private let movieItems: [MovieModel] = MovieModel.dummy()
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "실시간 인기 영화"
-        label.font = UIFont.pretendardBold(ofSize: 15)
-        label.textColor = .white
-        return label
-    }()
 
-    private let moreButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("더보기", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.pretendardMedium(ofSize: 14)
-        return button
-    }()
+    // MARK: - UI 컴포넌트
 
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 150, height: 200)
-        layout.minimumLineSpacing = 4
+    private let titleLabel = UILabel().then {
+        $0.text = "실시간 인기 영화"
+        $0.font = UIFont.pretendardBold(ofSize: 15)
+        $0.textColor = .white
+    }
 
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.isPagingEnabled = true
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .black
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(MovieViewCell.self, forCellWithReuseIdentifier: "MovieViewCell")
-        return collectionView
-    }()
+    private let moreButton = UIButton(type: .system).then {
+        $0.setTitle("더보기", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = UIFont.pretendardMedium(ofSize: 14)
+    }
+
+    private lazy var collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout().then {
+            $0.scrollDirection = .horizontal
+            $0.itemSize = CGSize(width: 150, height: 200)
+            $0.minimumLineSpacing = 4
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        }
+    ).then {
+        $0.isPagingEnabled = true
+        $0.showsHorizontalScrollIndicator = false
+        $0.backgroundColor = .black
+        $0.dataSource = self
+        $0.delegate = self
+        $0.register(MovieViewCell.self, forCellWithReuseIdentifier: "MovieViewCell")
+    }
+
+    // MARK: - 생명주기
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-
-        view.addSubview(titleLabel)
-        view.addSubview(moreButton)
-        view.addSubview(collectionView)
-
         setupLayout()
     }
 
+    // MARK: - 레이아웃 설정
+
     private func setupLayout() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        moreButton.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        [titleLabel, moreButton, collectionView].forEach { view.addSubview($0) }
 
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(5)
+            make.leading.equalToSuperview().offset(20)
+        }
 
-            moreButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            moreButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        moreButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel)
+            make.trailing.equalToSuperview().inset(20)
+        }
 
-            collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 200),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(200)
+            make.bottom.equalToSuperview()
+        }
     }
 }
+
+// MARK: - UICollectionView 데이터소스 & 델리게이트
 
 extension MovieViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
