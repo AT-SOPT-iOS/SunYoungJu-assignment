@@ -16,7 +16,7 @@ final class WelcomeViewController: UIViewController {
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Tving")
+        imageView.image = UIImage(named: "TVING")
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         return imageView
@@ -84,6 +84,7 @@ final class WelcomeViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func goHomeButtonTapped() {
-        navigationController?.popToRootViewController(animated: true)
+        let mainVC = MainViewController()
+        navigationController?.pushViewController(mainVC, animated: true)
     }
 }

@@ -13,12 +13,12 @@ struct MasterpieceModel {
 extension MasterpieceModel {
     static func dummy() -> [MasterpieceModel] {
         return [
-            MasterpieceModel(image: UIImage(named: "live1")!),
-            MasterpieceModel(image: UIImage(named: "live2")!),
-            MasterpieceModel(image: UIImage(named: "live3")!),
-            MasterpieceModel(image: UIImage(named: "live4")!),
             MasterpieceModel(image: UIImage(named: "live5")!),
-            MasterpieceModel(image: UIImage(named: "live6")!)
+            MasterpieceModel(image: UIImage(named: "live4")!),
+            MasterpieceModel(image: UIImage(named: "live3")!),
+            MasterpieceModel(image: UIImage(named: "live2")!),
+            MasterpieceModel(image: UIImage(named: "live6")!),
+            MasterpieceModel(image: UIImage(named: "live1")!)
         ]
     }
 }

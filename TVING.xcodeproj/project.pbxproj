@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		983943B92DC4DC5C007EEFC0 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 983943B82DC4DC5C007EEFC0 /* Then */; };
+		986749952DC2A96A0088FBE4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 986749942DC2A96A0088FBE4 /* SnapKit */; };
+		986749972DC2A9CD0088FBE4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 986749962DC2A9CD0088FBE4 /* SnapKit */; };
+		9867499B2DC2A9E50088FBE4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9867499A2DC2A9E50088FBE4 /* SnapKit */; };
 		98B2FB9F2DB554C30033D523 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B2FB9E2DB554C30033D523 /* SnapKit */; };
 		98B2FBA42DB555BA0033D523 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B2FBA32DB555BA0033D523 /* SnapKit */; };
 		98B2FBA62DB556540033D523 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B2FBA52DB556540033D523 /* SnapKit */; };
 		98B2FBA82DB556E10033D523 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B2FBA72DB556E10033D523 /* SnapKit */; };
 		98B2FBAA2DB557080033D523 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98B2FBA92DB557080033D523 /* SnapKit */; };
+		98CB84D12DC2AA1B00D53E9F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98CB84D02DC2AA1B00D53E9F /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +52,13 @@
 				98B2FBA62DB556540033D523 /* SnapKit in Frameworks */,
 				98B2FBA82DB556E10033D523 /* SnapKit in Frameworks */,
 				98B2FB9F2DB554C30033D523 /* SnapKit in Frameworks */,
+				986749972DC2A9CD0088FBE4 /* SnapKit in Frameworks */,
+				986749952DC2A96A0088FBE4 /* SnapKit in Frameworks */,
+				983943B92DC4DC5C007EEFC0 /* Then in Frameworks */,
+				9867499B2DC2A9E50088FBE4 /* SnapKit in Frameworks */,
 				98B2FBA42DB555BA0033D523 /* SnapKit in Frameworks */,
 				98B2FBAA2DB557080033D523 /* SnapKit in Frameworks */,
+				98CB84D12DC2AA1B00D53E9F /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +130,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				98B2FB9D2DB554C30033D523 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				983943B72DC4DC5C007EEFC0 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 980AA2DD2DB4D6950065D9D3 /* Products */;
@@ -157,6 +168,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6B47X24XTW;
@@ -189,6 +201,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6B47X24XTW;
@@ -361,6 +374,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		983943B72DC4DC5C007EEFC0 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		98B2FB9D2DB554C30033D523 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -372,6 +393,23 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		983943B82DC4DC5C007EEFC0 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 983943B72DC4DC5C007EEFC0 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		986749942DC2A96A0088FBE4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SnapKit;
+		};
+		986749962DC2A9CD0088FBE4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SnapKit;
+		};
+		9867499A2DC2A9E50088FBE4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SnapKit;
+		};
 		98B2FB9E2DB554C30033D523 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 98B2FB9D2DB554C30033D523 /* XCRemoteSwiftPackageReference "SnapKit" */;
@@ -395,6 +433,10 @@
 		98B2FBA92DB557080033D523 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 98B2FB9D2DB554C30033D523 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		98CB84D02DC2AA1B00D53E9F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
