@@ -48,8 +48,7 @@ class BaseballViewController: UIViewController {
         collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(80) // 셀보다 살짝 높여서 여유 공간
-            make.bottom.equalToSuperview() // 혹시 부모 뷰의 높이가 다를 때 대비
+            make.bottom.equalToSuperview()
         }
     }
 }

@@ -22,7 +22,7 @@ class LiveViewCell: UICollectionViewCell {
     private let rankLabel = UILabel().then {
         $0.font = UIFont.pretendardExtraBold(ofSize: 32)
         $0.textColor = .white
-        $0.transform = CGAffineTransform(rotationAngle: CGFloat(5 * Double.pi / 180))
+        $0.lineBreakMode = .byTruncatingTail
     }
 
     private let broadcasterLabel = UILabel().then {
@@ -33,6 +33,10 @@ class LiveViewCell: UICollectionViewCell {
     private let titleLabel = UILabel().then {
         $0.font = UIFont.pretendardBold(ofSize: 14)
         $0.textColor = .white
+        $0.numberOfLines = 1
+        $0.lineBreakMode = .byTruncatingTail
+        $0.adjustsFontSizeToFitWidth = false
+        $0.minimumScaleFactor = 1.0
     }
 
     private let ratingLabel = UILabel().then {
@@ -60,8 +64,7 @@ class LiveViewCell: UICollectionViewCell {
 
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(80)
-            make.width.equalTo(160)
+            make.height.equalTo(100)
         }
 
         rankLabel.snp.makeConstraints { make in
@@ -77,12 +80,13 @@ class LiveViewCell: UICollectionViewCell {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(broadcasterLabel.snp.bottom).offset(2)
             make.leading.equalTo(broadcasterLabel.snp.leading)
+            make.trailing.lessThanOrEqualToSuperview().offset(-8)
         }
 
         ratingLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(2)
             make.leading.equalTo(broadcasterLabel.snp.leading)
-            make.bottom.lessThanOrEqualToSuperview()
+            make.bottom.equalToSuperview().inset(4)
         }
     }
 
